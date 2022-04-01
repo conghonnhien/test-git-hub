@@ -1,0 +1,38 @@
+﻿@*@model DienTu.Models.OrderHeader*@
+@model DienTu.Models.ViewModels.OrderDetailsCart
+@{
+    ViewData["Title"] = "NotificationPayment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post">
+    <br />
+    <input type="hidden" asp-for="@Model.OrderHeader.ApplicationUser" />
+    <div class="backgroundWhiteBorder">
+        <div class="row">
+            <div class="col-6">
+                <h4 style="color:blue;">Quí khách đã thanh toán thành công số tiền: </h4>
+            </div>
+            <div class="col-6">
+                <h3>$@ViewBag.OrderTotal</h3>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <h4>Bạn sẽ nhận được hàng sau 2h nếu ở TPHCM</h4>
+            <h4>Bạn sẽ nhận được hàng sau 2-3 ngày nếu ở ngoài TPHCM</h4>
+        </div>
+
+        <div class="col-12 text-center ">
+            <span style="color:red;">Cảm ơn bạn đã mua hàng tại cửa hàng chúng tôi.</span>
+        </div>
+       
+        <div class="col-12 text-center">
+            <button class="btn btn-success" asp-area="Customer" asp-controller="Home" asp-action="Index" >Trang Chủ</button>
+        </div>
+    </div>
+    <div class="pyro"><div class="before"></div><div class="after"></div></div>
+
+</form>
+
+@{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}

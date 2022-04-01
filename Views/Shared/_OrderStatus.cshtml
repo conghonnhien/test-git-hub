@@ -1,0 +1,75 @@
+﻿@model string
+@using DienTu.Utility
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div>
+    @if (Model == SD.StatusSubmitted)
+    {
+        <div class="progress">
+            <div class="progress-bar bg-warning" role="progressbar" style="width:25%">
+                Chờ xác nhận
+            </div>
+            <div class="progress-bar bg-success" role="progressbar" style="width:25%">
+                Đang đóng gói
+            </div>
+            <div class="progress-bar bg-success" role="progressbar" style="width:25%">
+                Đang giao
+            </div>
+            <div class="progress-bar bg-success" role="progressbar" style="width:25%">
+                Hoàn Thành
+            </div>
+        </div>
+    }
+    @if (Model == SD.StatusInProcess)
+    {
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width:25%">
+                Chờ xác nhận
+            </div>
+            <div class="progress-bar bg-warning" role="progressbar" style="width:25%">
+                Đang đóng gói
+            </div>
+            <div class="progress-bar bg-success" role="progressbar" style="width:25%">
+                Đang giao
+            </div>
+            <div class="progress-bar bg-success" role="progressbar" style="width:25%">
+                Hoàn Thành
+            </div>
+        </div>
+    }
+    @if (Model == SD.StatusShip)
+    {
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width:25%">
+                Chờ xác nhận
+            </div>
+            <div class="progress-bar bg-success" role="progressbar" style="width:25%">
+                Đang đóng gói
+            </div>
+            <div class="progress-bar bg-warning" role="progressbar" style="width:25%">
+                Đang giao
+            </div>
+            <div class="progress-bar bg-success" role="progressbar" style="width:25%">
+                Hoàn Thành
+            </div>
+        </div>
+    }
+    @if (Model == SD.StatusCompleted)
+    {
+        <div class="progress">z
+            <div class="progress-bar bg-success" role="progressbar" style="width:25%">
+                Chờ xác nhận
+            </div>
+            <div class="progress-bar bg-success" role="progressbar" style="width:25%">
+                Đang đóng gói
+            </div>
+            <div class="progress-bar bg-success" role="progressbar" style="width:25%">
+                Đang giao
+            </div>
+            <div class="progress-bar bg-warning" role="progressbar" style="width:25%">
+                Hoàn Thành
+            </div>
+        </div>
+    }
+</div>

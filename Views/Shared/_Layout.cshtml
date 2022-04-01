@@ -1,0 +1,203 @@
+﻿@using DienTu.Utility
+@using Microsoft.AspNetCore.Http
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DienTu</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/jquery-ui.css"/>
+ 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+</head>
+<body class="search-background">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">
+                    <label class="text-info">DienTuQCong</label>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        @if (User.IsInRole(SD.ManagerUser))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item text-dark" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+                                    <a class="dropdown-item text-dark" asp-area="Admin" asp-controller="SubCategory" asp-action="Index">Sub Category</a>
+                                    <a class="dropdown-item text-dark" asp-area="Admin" asp-controller="MenuItem" asp-action="Index">MenuItem</a>
+                                    <a class="dropdown-item text-dark" asp-area="Admin" asp-controller="Coupon" asp-action="Index">Coupons</a>
+                                    <a class="dropdown-item text-dark" asp-area="Admin" asp-controller="User" asp-action="Index">User</a>
+                                    <a class="dropdown-item text-dark" asp-area="Admin" asp-controller="BanHang" asp-action="Index">Bán Hàng</a>
+                                </div>
+                            </li>
+                        }
+
+                        @if (User.IsInRole(SD.CustomerUser) || User.IsInRole(SD.ManagerUser))
+                        {
+                            <li class="nav-item">
+                                <a asp-area="Customer" asp-controller="Order" asp-action="OrderHistory" class="nav-link">
+                                    Order History
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole(SD.ManagerUser))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Order
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item text-dark" asp-area="Customer" asp-controller="Order" asp-action="ManageOrder">Quản lí đơn hàng</a>
+                                    <a class="dropdown-item text-dark" asp-area="Customer" asp-controller="Order" asp-action="OrderPickup">Trạng Thái</a>
+                                </div>
+                            </li>
+                        }
+
+
+                        @if (HttpContextAccessor.HttpContext.Session.GetInt32(@SD.ssShoppingCartCount) != null)
+                        {
+                            <li style="color:white">
+                                <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="nav-link">
+                                    @{
+                                        var count = HttpContextAccessor.HttpContext.Session.GetInt32(@SD.ssShoppingCartCount);
+                                    }
+                                    <i class="fas fa-shopping-cart"></i>
+                                    &nbsp; (@count)
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li style="color:white">
+                                <a href="#" class="nav-link">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    &nbsp; (0)
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top pl-3 footer text-white-50" style="background-color:#343a40;">
+        <div class="container">
+            &copy; @DateTime.Now DienTu
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-ui.js"></script>
+    <script src="https://cdn.tiny.cloud/1/hdlv2fkzud764xm1asr5p472hd9jzvuqpe4999j3w7mn1dky/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    @RenderSection("Scripts", required: false)
+    <script>
+        function popup_lg(title, content) {
+            var modalId = 'modal-lg';
+            $('body').append('<div id="' + modalId + '" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">'
+                + '<div class="modal-dialog">'
+                + '<div class="modal-content">'
+                + '<div class="modal-header">'
+                + '<h4 class="modal-title">' + title + '</h4>'
+                + '<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Hit Esc to close">&times;</button>'
+                + '</div>'
+                + '<div class="modal-body">'
+                + content
+                + '</div>'
+                + '</div>'
+                + '</div>'
+
+                + '<style>'
+                + '#' + modalId + ' .modal-dialog { width: ' + (100 - 5000 / ($(window).width() + 2000)) + '% !important; max-width: 900px !important; }'
+                + '#' + modalId + ' .modal-body { width: auto; overflow-x: auto; }'
+                + '</div>');
+
+            $('#modal-lg').on('hidden.bs.modal', function () {
+                location.reload();
+            });
+            // show modal
+            $('#' + modalId).modal({
+                backdrop: 'static'
+            });
+        }
+        function popup_sm(title, content) {
+            var modalId = 'modal-sm';
+            $('body').append('<div id="' + modalId + '" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">'
+                + '<div class="modal-dialog">'
+                + '<div class="modal-content">'
+                + '<div class="modal-header">'
+                + '<h4 class="modal-title">' + title + '</h4>'
+                + '<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Hit Esc to close">&times;</button>'
+                + '</div>'
+                + '<div class="modal-body">'
+                + content
+                + '</div>'
+                + '</div>'
+                + '</div>'
+
+                + '<style>'
+                + '#' + modalId + ' .modal-body { width: auto;overflow-x:auto; }'
+                + '</style>'
+                + '</div>');
+
+            // show modal
+            $('#' + modalId).modal({
+                backdrop: 'static'
+            });
+        }
+        function system_fail_popup() {
+            var modalId = 'modal-system-fail';
+            $('body').append('<div id="' + modalId + '" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">'
+                + '<div class="modal-dialog">'
+                + '<div class="modal-content">'
+                + '<div class="modal-header">'
+                + '<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Hit Esc to close">&times;</button>'
+                + '<h4 class="modal-title">' + 'System busy' + '</h4>'
+                + '</div>'
+                + '<div class="modal-body">'
+                + '<div class="alert alert-danger" role="alert">' +
+                '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span> System is busy now. Please try again later.' +
+                '</div>'
+                + '</div>'
+                + '</div>'
+                + '</div>'
+
+                + '<style>'
+                + '#' + modalId + ' .modal-body { width: auto;overflow-x:auto; }'
+                + '</style>'
+                + '</div>');
+
+            // show modal
+            $('#' + modalId).modal({
+                backdrop: 'static'
+            });
+        }
+    </script>
+</body>
+</html>

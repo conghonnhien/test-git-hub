@@ -1,0 +1,72 @@
+﻿@model List<DienTu.Models.MenuItem>
+@{
+    //ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+
+<div class="border backgroundWhite">
+    @if (Model != null)
+    {
+        <div class="container">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Hình ảnh</th>
+                        <th>Tên</th>
+                        <th>Giá</th>
+                        <th>Số Lượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr data-id="@item.Id" data-price="@item.Price">
+                            <td><img src="@item.Image" style="border-radius:5px;border: 1px solid #bbb9b9; width: 75px" /></td>
+                            <td>@item.Name</td>
+                            <td>@item.Price</td>
+                            <td><input value="0" min="0" max="99" type="number" class="put-pro" onchange="addItems()" /></td>
+                        </tr>
+                    }
+                    <tr>
+                        <th colspan="3" style="text-align: right">Tổng</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th colspan="3" style="text-align: right"></th>
+                        <th><span class="total">0</span></th>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="text-align: right">
+                <div><button class="btn btn-success">Lưu</button></div>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <p>Chưa có sản phẩm nào được tạo</p>
+    }
+</div>
+
+@section Scripts{
+    @*<script>
+            $(function () {
+                var ids = [];
+
+                function addItems(e) {
+                    alert(1)
+                }
+
+                $("input[class='put-pro']").change(function () {
+                    alert(1)
+                });
+                $('.put-pro').change(function () {
+                    alert(1)
+                    var id = $(this).closest("tr").data('id');
+                    alert(id);
+                });
+            }
+        </script>*@
+}

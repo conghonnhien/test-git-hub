@@ -1,0 +1,60 @@
+﻿@model IEnumerable<HoaDon>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<br />
+
+<div class="border backgroundWhite">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-info">Danh Sách Đơn Hàng</h2>
+        </div>
+        <div class="col-6 text-right">
+            <partial name="_CreateButtonPartial"></partial>
+        </div>
+    </div>
+    <br />
+    <div>
+        @if (Model.Count() > 0)
+        {
+            <table class="table table-striped border">
+                <tr class="table-secondary">
+                    <th>
+                        @Html.DisplayNameFor(a => a.MaHD)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(a => a.SoLuong)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(a => a.TongCong)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+            <tr>
+                <td>
+                    @Html.DisplayFor(a => item.MaHD)
+                </td>
+                <td>
+                    @Html.DisplayFor(a => item.SoLuong)
+                </td>
+                <td>
+                    @Html.DisplayFor(a => item.TongCong)
+                </td>
+                <td>
+                    <partial name="_TableButtonPartial" model="item.MaHD"></partial>
+                </td>
+            </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <p>Chưa có đơn hàng nào được tạo</p>
+        }
+    </div>
+</div>

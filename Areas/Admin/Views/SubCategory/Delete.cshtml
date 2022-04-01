@@ -1,0 +1,38 @@
+﻿@model DienTu.Models.SubCategory
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<h2 class="text-danger">Detele SubCategory</h2>
+<br />
+
+<form method="post">
+    <div class="backgroundWhite">
+        <input type="hidden" asp-for="Id" />
+        <fieldset disabled>
+            <div class="form-group row">
+                <div class="col-2">
+                    <label asp-for="Name" class="custom-label"></label>
+                </div>
+                <div class="col-5">
+                    <input asp-for="Name" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-2">
+                    <label asp-for="Category.Name" class="custom-label"></label>
+                </div>
+                <div class="col-5">
+                    <input asp-for="Category.Name" class="form-control" />
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-group row">
+            <div class="col-5 offset-2">
+                <partial name="_DeleteAndExitPartial" model="Model.Id"></partial>
+            </div>
+        </div>
+    </div>
+</form>

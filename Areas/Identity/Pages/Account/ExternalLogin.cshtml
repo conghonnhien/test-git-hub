@@ -1,0 +1,155 @@
+﻿@page
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1 class="text-info">Đăng nhập với FaceBook</h1>
+
+<hr />
+
+<p id="external-login-description" class="text-info">
+    Đang tiến hành đăng kí với <strong>@Model.ProviderDisplayName</strong>.
+    Làm ơn hãy điền đầy đủ thông tin để hoàn thành quá trình đăng kí
+</p>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+            <div class="border backgroundWhite">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Input.Name" class="col-form-label"></label>
+                    </div>
+                    <div class="col-5">
+                        <input id="txtName" asp-for="Input.Name" class="form-control" />
+                    </div>
+                    <span class="text-danger" asp-validation-for="Input.Name"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Input.Email" class="col-form-label"></label>
+                    </div>
+                    <div class="col-5">
+                        <input id="txtEmail" asp-for="Input.Email" class="form-control" />
+                    </div>
+                    <span class="text-danger" asp-validation-for="Input.Email"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Input.PhoneNumber" class="col-form-label"></label>
+                    </div>
+                    <div class="col-5">
+                        <input id="txtPhone" asp-for="Input.PhoneNumber" class="form-control" />
+                    </div>
+                    <span class="text-danger" asp-validation-for="Input.PhoneNumber"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Input.StreetAddress" class="col-form-label"></label>
+                    </div>
+                    <div class="col-5">
+                        <input id="txtAddress" asp-for="Input.StreetAddress" class="form-control" />
+                    </div>
+                    <span class="text-danger" asp-validation-for="Input.StreetAddress"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Input.City" class="col-form-label"></label>
+                    </div>
+                    <div class="col-5">
+                        <input id="txtCity" asp-for="Input.City" class="form-control" />
+                    </div>
+                    <span class="text-danger" asp-validation-for="Input.City"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Input.Province" class="col-form-label"></label>
+                    </div>
+                    <div class="col-5">
+                        <input id="txtProvince" asp-for="Input.Province" class="form-control" />
+                    </div>
+                    <span class="text-danger" asp-validation-for="Input.Province"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Input.PostalCode" class="col-form-label"></label>
+                    </div>
+                    <div class="col-5">
+                        <input id="txtPostalCode" asp-for="Input.PostalCode" class="form-control" />
+                    </div>
+                    <span class="text-danger" asp-validation-for="Input.PostalCode"></span>
+                </div>                        
+
+                <div class="form-group row">
+                    <div class="col-5 offset-2">
+                        <button type="submit" onclick="return validateInput()" class="btn btn-primary form-control">Register</button>
+                    </div>
+                </div>
+            </div>         
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function validateInput() {
+            var name = document.getElementById("txtName").value;
+            var email = document.getElementById("txtEmail").value;
+            var phone = document.getElementById("txtPhone").value;
+            var address = document.getElementById("txtAddress").value;
+            var city = document.getElementById("txtCity").value;
+            var province = document.getElementById("txtProvince").value;
+            var postalcode = document.getElementById("txtPostalCode").value;
+            if (name.toString() == '') {
+                alert("bạn chưa nhập tên");
+                return false;
+            }
+            else {
+                if (email.toString() == '') {
+                    alert("bạn chưa nhập địa chỉ email");
+                    return false;
+                }
+                else {
+                    if (phone.toString() == '') {
+                        alert("bạn chưa nhập số điện thoại");
+                        return false;
+                    }
+                    else {
+                        if (address.toString() == '') {
+                            alert("bạn chưa nhập địa chỉ");
+                            return false;
+                        }
+                        else {
+                            if (city.toString() =='') {
+                                alert("bạn chưa nhập thành phố");
+                                return false;
+                            }
+                            else {
+                                if (province.toString() == '') {
+                                    alert("bạn chưa nhập tỉnh");
+                                    return false;
+                                }
+                                else {
+                                    if (postalcode.toString() == '') {
+                                        alert("bạn chưa nhập mã bưu điện");
+                                        return false;
+                                    }
+                                    else {
+                                        return true;
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+     </script>
+}

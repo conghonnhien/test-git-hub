@@ -1,0 +1,212 @@
+﻿
+@model DienTu.Models.ViewModels.OrderDetailsCart
+@using Microsoft.Extensions.Options
+
+@inject IOptions<DienTu.Utility.StripeSettings> Stripe
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post">
+    @if (Model.listCart.Count > 0)
+    {
+        <br />
+        <input type="hidden" id="userId" asp-for="@Model.listCart[0].ApplicationUserId" />
+        <div class="backgroundWhiteBorder">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header bg-dark text-light ml-0 row container">
+                        <div class="col-6">
+                            <i class="fa fa-shopping-cart"></i>
+                            &nbsp;Thanh Toán
+                        </div>
+                        <div class="col-6 text-right">
+                            <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="btn btn-outline-info btn-sm">Back To Cart</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container rounded p-2">
+                            <div class="row">
+                                <div class="col-12 col-lg-6 pb-4">
+                                    <div class="row">
+                                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                            <span class="text-info">Chi Tiết</span>
+                                        </h4>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label>Name</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.PickUpName" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label>Phone</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.PhoneNumber" id="txtPhone" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label>Date</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.PickUpDate" id="datepicker" value="" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label>Time</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.PickUpTime" id="timepicker" value="" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label>Comment</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.Comments" style="height:100px;" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-5 offset-lg-1">
+                                    <h4 class="d-flex justify-content-between align-content-center mb-3">
+                                        <span class="text-info">Thành Tiền</span>
+                                    </h4>
+                                    <ul class="list-group mb-3">
+                                        @{ var total = 0.0;}
+
+                                        @foreach (var details in Model.listCart)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <div>
+                                                    <h6 class="my-0">@details.MenuItem.Name</h6>
+                                                    <small class="text-muted">Số Lượng: @details.Count x @details.MenuItem.Price$</small>
+                                                </div>
+                                                <span class="text-muted">$ @(details.MenuItem.Price * details.Count)</span>
+                                                @{ total += (details.MenuItem.Price * details.Count);}
+                                            </li>
+                                        }
+                                        @if (Model.OrderHeader.CouponCode != null)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <div class="text-success">
+                                                    <h6 class="my-0">Coupon Code:</h6>
+                                                    <small class="text-success">@Model.OrderHeader.CouponCode</small>
+                                                </div>
+                                                <span class="text-success">-$@(total-Model.OrderHeader.OrderTotal)</span>
+                                            </li>
+                                        }
+                                        <li class="list-group-item d-flex justify-content-between bg-light">
+                                            <small class="text-info">Total (USD)</small>
+                                            <strong class="text-info">$@(Model.OrderHeader.OrderTotal)</strong>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-12 col-md-4 offset-md-8">
+
+                                @{
+                                    var OrderTotalForStrip = Model.OrderHeader.OrderTotal *100;
+
+                                }
+
+                                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                        data-key="@Stripe.Value.PublishableKey"
+                                        data-amount="@OrderTotalForStrip"
+                                        data-name="Điện Tử QC"
+                                        data-label="Thanh Toán"
+                                        data-description="Giá Rẻ,Nhanh,Uy Tín."
+                                        data-locale="auto"
+                                        data-allow-remember-me="false"
+                                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png">
+                                </script>
+                                <script>
+                                    document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+                                </script>
+                                <button type="submit" id="btnThanhToan" onclick="return validateInput()" value="Thanh Toán" class="btn btn-success form-control">Thanh Toán</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <p class="backgroundWhiteBorder">Bạn chưa mua hàng</p>
+    }
+</form>
+
+@section Scripts{
+
+
+    <link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
+          rel='stylesheet'>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js">
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <script>
+
+
+        $(function () {
+
+            $("#datepicker").datepicker({ minDate: 0, maxDate: "+1W", dateFormat: 'dd-mm-yy' });
+            $("#timepicker").timepicker({ 'minTime': '8:00 AM', 'maxTime': '10:00 PM', step: '30' });
+        });
+
+
+
+        function validateInput() {
+            var time = document.getElementById("timepicker").value;
+            var date = document.getElementById("datepicker").value;
+            var name = document.getElementById("txtName").value;
+            var phone = document.getElementById("txtPhone").value;
+            if (date.toString() == '') {
+                alert("bạn chưa nhập ngày  đặt hàng");
+                return false;
+            }
+            else {
+                if (time.toString() == '') {
+                    alert("bạn chưa nhập thời gian đặt hàng");
+                    return false;
+                }
+                else {
+                    if (name.toString() == '') {
+                        alert("bạn chưa nhập tên của bạn");
+                        return false;
+                    }
+                    else {
+                        if (phone.toString() == '') {
+                            alert("bạn chưa nhập số điện thoại");
+                            return false;
+                        }
+                        else {
+                            return true;
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+}
+

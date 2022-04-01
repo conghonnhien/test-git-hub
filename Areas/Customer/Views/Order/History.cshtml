@@ -1,0 +1,145 @@
+﻿@*@model DienTu.Models.ViewModels.OrderListViewModel*@
+@model List<DienTu.Models.ViewModels.OrderDetailsViewModel>
+@using DienTu.Utility
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<br />
+
+
+<div class="backgroundWhite">
+    @foreach (var item in Model)
+    {
+        <div class="col-12 text-center">
+            @*<h2 class="text-primary">Mã Đơn hàng : @Model.Orders[0].OrderHeader.Id</h2>*@
+            <h2 class="text-primary">Mã Đơn hàng : @item.OrderHeader.Id</h2>
+
+        </div>
+        <div class="col-12 text-center">
+            <h6 class="text-danger ">(@item.OrderHeader.PaymentStatus)</h6>
+        </div>
+
+        <div class="row">
+            <div class="col-12 row">
+                <div class="col-6">
+                    <h5 class="text-info">Tên người bán : Admin</h5>
+                </div>
+
+                <div class="col-6">
+                    <h5 class="text-info ">Tên người mua: @item.OrderHeader.ApplicationUser.Name</h5>
+                </div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-6">
+                    <h5 class="text-info">Địa chỉ: 13 Quang Trung,Gò Vấp,TPCHM </h5>
+                </div>
+
+                <div class="col-6">
+                    <h5 class="text-info ">Địa chỉ: @item.OrderHeader.ApplicationUser.StreetAddress,@item.OrderHeader.ApplicationUser.City,@item.OrderHeader.ApplicationUser.Province</h5>
+                </div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-6">
+                    <h5 class="text-info">SĐT: 0934936206 </h5>
+                </div>
+
+                <div class="col-6">
+                    <h5 class="text-info "> SĐT: @item.OrderHeader.ApplicationUser.PhoneNumber</h5>
+                </div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-6">
+                    <h5 class="text-info">Email: abc@gmail.com </h5>
+                </div>
+
+                <div class="col-6">
+                    <h5 class="text-info "> Email: @item.OrderHeader.ApplicationUser.Email</h5>
+                </div>
+            </div>
+            <div class="col-12">
+                <h5 class="text-info "> Ngày đặt hàng: @item.OrderHeader.PickUpTime</h5>
+            </div>
+            <div class="col-12">
+                <div>
+                    <h5 class="text-info">Ghi Chú </h5><input asp-for="@item.OrderHeader.Comments" disabled class="form-control" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <hr />
+        <table class="table table-striped border">
+            <tr class="table-secondary">
+                @*<th>
+                    STT
+                </th>*@
+                <th>
+                    Tên Sản Phẩm
+                </th>
+                <th>
+                    Số lượng
+                </th>
+                <th>
+                    Giá tiền
+                </th>
+                <th>
+                    Thành Tiền
+                </th>
+            </tr>
+            @foreach (var sp in item.OrderDetails)
+            {
+                <tr>
+                    
+                    <td>
+                        @sp.Name
+                    </td>
+                    <td>
+                        @sp.Count
+                    </td>
+                    <td>
+                        @sp.Price USD
+                    </td>
+                    <td>
+                        @(@sp.Price*@sp.Count)
+                    </td>
+
+                </tr>
+            }
+        </table>
+
+        <div class="col-12 row">
+            <div class="col-6">
+                <h5> Tổng cộng : </h5>
+            </div>
+            <div class="col-6 text-right">
+                <h5> @item.OrderHeader.OrderTotalOriginal <span class="text-primary">USD</span></h5>
+            </div>
+        </div>
+        @if (item.OrderHeader.CouponCode != null)
+        {
+            <div class="col-12 row">
+                <div class="col-6">
+                    <h5> Giảm Giá : </h5>
+                </div>
+                <div class="col-6 text-right">
+                    <h5> -@(item.OrderHeader.OrderTotalOriginal-item.OrderHeader.OrderTotal). <span class="text-primary">USD</span></h5>
+                </div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-6">
+                    <h5> Tổng Cộng : </h5>
+                </div>
+                <div class="col-6 text-right">
+                    <h5> @item.OrderHeader.OrderTotal <span class="text-primary">USD</span></h5>
+                </div>
+            </div>
+        }
+
+    }
+    <div class="col-12 text-center">
+        <a asp-action="OrderHistory" asp-controller="Order" asp-area="Customer" class="btn btn-primary">Quay lại</a>
+    </div>
+</div>
+
